@@ -5,4 +5,9 @@ public:
     {
         return a + b;
     }
+
+int functionsub(int a, int b)
+    {
+        return a - b;
+    }
 };
