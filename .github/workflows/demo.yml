@@ -1,29 +1,44 @@
-name: demo-actions
+name: Build and Deploy Workflow
 
 on:
   push:
     branches:
-      - main
+      - main  # Trigger when code is pushed to the 'main' branch
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: run a sample
-        run: echo Hello World
+    runs-on: ubuntu-latest  # Set the runner to use Ubuntu
 
-      - name: Upload artifact
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Create a Sample File
+        run: |
+          echo "This is a sample build file" > sample.txt
+          echo "Generated at: $(date)" >> sample.txt
+
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifact
-          path: ${{ github.workspace }}
+          name: sample-artifact
+          path: sample.txt
 
   deploy:
-    runs-on: ubuntu-latest
+    needs: build  # Ensure deploy happens after the build is successful
+    runs-on: ubuntu-latest  # Set the runner to use Ubuntu
+
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
         with:
-          name: build-artifact
-          path: ${{ github.workspace }}
+          name: sample-artifact
+          path: ./deployment
+
+      - name: Display File Contents
+        run: cat ./deployment/sample.txt
+
+      - name: Simulate Deployment
+        run: |
+          echo "Simulating deployment..."
+          echo "Deploying the artifact to a simulated environment."
