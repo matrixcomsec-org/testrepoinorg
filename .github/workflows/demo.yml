@@ -2,13 +2,14 @@ name: demo-actions
 
 on:
   push:
-    branches: main
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      -uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       
-      -name: run a sample
-       run: echo Hello World
+      - name: run a sample
+        run: echo Hello World
